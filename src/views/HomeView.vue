@@ -20,7 +20,7 @@
                 <FeatureItem>
                     <template #icon>touch_app</template>
                     <template #heading>Buttons</template>
-                    <template #default>Filled, contained, and blank buttons</template>
+                    <template #default>Filled, contained, and text buttons</template>
                 </FeatureItem>
 
                 <FeatureItem>
@@ -31,8 +31,8 @@
 
                 <FeatureItem>
                     <template #icon>rotate_right</template>
-                    <template #heading>Loader</template>
-                    <template #default>Spinners and loading bars</template>
+                    <template #heading>Loaders</template>
+                    <template #default>Spinners <del>and loading bars</del> <small>(Coming soon)</small></template>
                 </FeatureItem>
             </div>
         </section>

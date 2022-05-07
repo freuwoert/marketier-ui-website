@@ -19,16 +19,16 @@ const router = createRouter({
             name: 'configurator',
             component: () => import('../views/ConfiguratorView.vue')
         },
-        {
-            path: '/legal-disclosures',
-            name: 'legal-disclosures',
-            component: () => import('../views/ConfiguratorView.vue')
-        },
-        {
-            path: '/privacy-policy',
-            name: 'privacy-policy',
-            component: () => import('../views/ConfiguratorView.vue')
-        },
+        // {
+        //     path: '/legal-disclosures',
+        //     name: 'legal-disclosures',
+        //     component: () => import('../views/ConfiguratorView.vue')
+        // },
+        // {
+        //     path: '/privacy-policy',
+        //     name: 'privacy-policy',
+        //     component: () => import('../views/ConfiguratorView.vue')
+        // },
     ],
 })
 

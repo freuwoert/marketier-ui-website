@@ -15,9 +15,11 @@
                 <nav>
                     <a href="https://github.com/freuwoert/marketier-ui" target="_blank">Github</a>
                     <span>•</span>
-                    <RouterLink to="/legal-disclosures">Legal Disclosures</RouterLink>
+                    <a href="https://marketier.solutions/legal-disclosures" target="_blank">Legal Disclosures</a>
+                    <!-- <RouterLink to="/legal-disclosures">Legal Disclosures</RouterLink> -->
                     <span>•</span>
-                    <RouterLink to="/privacy-policy">Privacy Policy</RouterLink>
+                    <a href="https://marketier.solutions/privacy-policy" target="_blank">Privacy Policy</a>
+                    <!-- <RouterLink to="/privacy-policy">Privacy Policy</RouterLink> -->
                 </nav>
             </div>
         </div>
