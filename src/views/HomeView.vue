@@ -60,4 +60,9 @@
             display: grid
             grid-template-columns: 1fr 1fr
             gap: 4rem
+
+    @media screen and (max-width: 768px)
+        #features
+            .limiter.grid
+                grid-template-columns: 1fr
 </style>

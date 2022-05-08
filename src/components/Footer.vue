@@ -56,6 +56,7 @@
                 nav
                     display: flex
                     align-items: center
+                    flex-wrap: wrap
                     gap: 1rem
 
                     a
@@ -72,4 +73,35 @@
                 width: 100%
                 height: 0
                 border-top: 1px solid var(--color-border)
+
+    @media screen and (max-width: 768px)
+        footer
+            .limiter
+                .row
+                    flex-direction: column
+                    gap: 1rem
+
+                    > span
+                        font-size: .8rem
+
+                    .spacer
+                        display: none
+
+    @media screen and (max-width: 480px)
+        footer
+            .limiter
+                padding-bottom: 1rem
+
+                .row
+                    gap: 2rem
+
+                    nav
+                        border-radius: .75rem
+                        width: 100%
+                        background: #00000010
+                        padding: 1rem
+                        flex-direction: column
+                        
+                        > span
+                            display: none
 </style>

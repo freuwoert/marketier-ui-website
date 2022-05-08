@@ -31,13 +31,24 @@
                 font-size: 4rem
                 font-weight: 300
                 color: var(--color-primary-contrast)
+                text-align: center
 
             p
                 font-size: 2rem
+                text-align: center
 
     #content
         padding-block: 8rem
 
         .limiter p
             max-width: 50rem
+
+    @media screen and (max-width: 768px)
+        #hero
+            .limiter
+                h1
+                    font-size: 2.6rem
+
+                p
+                    font-size: 1.6rem
 </style>

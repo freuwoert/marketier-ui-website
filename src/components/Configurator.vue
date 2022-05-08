@@ -238,6 +238,7 @@
             display: flex
             align-items: center
             justify-content: center
+            padding: 1rem
 
         .options
             grid-area: options

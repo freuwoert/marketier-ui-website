@@ -2,7 +2,7 @@
     <main>
         <section id="hero">
             <div class="limiter">
-                <h1>About Marketier UI</h1>
+                <h1>About Marketier&nbsp;UI</h1>
             </div>
         </section>
         <section id="content">
