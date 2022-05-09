@@ -20,3 +20,9 @@
         </section>
     </main>
 </template>
+
+<style lang="sass" scoped>
+    #content
+        h2
+            margin-bottom: 1rem
+</style>

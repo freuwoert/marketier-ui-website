@@ -5,15 +5,17 @@
                 <img alt="Marketier UI logo" class="logo" src="@/assets/mui_icon.svg" />
                 <h2>Marketier UI</h2>
             </RouterLink>
+
+            <div class="spacer"></div>
             
-            <nav>
-                <RouterLink to="/">Home</RouterLink>
-                <RouterLink to="/about">About</RouterLink>
-                <RouterLink to="/configurator">Configurator</RouterLink>
-            </nav>
+            <Menu />
         </div>
     </header>
 </template>
+
+<script setup>
+    import Menu from './Menu.vue'
+</script>
 
 <style lang="sass" scoped>
     header
@@ -69,48 +71,11 @@
                 position: relative
                 z-index: 1
 
+            .spacer
+                flex: 1
+
         .limiter
             display: flex
             align-items: center
-
-        nav
-            width: 100%
-            font-size: 1rem
-            margin: 0
-            display: flex
-            align-items: center
-            justify-content: flex-end
-            gap: 1rem
-
-            a
-                text-decoration: none
-                color: var(--color-text)
-                position: relative
-                height: 2.5rem
-                display: flex
-                align-items: center
-                justify-content: center
-                padding: 0 1rem
-                border-radius: .5rem
-                transition: all 100ms ease-in-out
-
-                &::after
-                    content: ''
-                    height: 100%
-                    width: 100%
-                    border-radius: inherit
-                    position: absolute
-                    top: 0
-                    left: 0
-                    background: var(--color-primary)
-                    opacity: 0
-                    transition: all 100ms ease-in-out
-
-                &:hover
-                    background: transparent
-                    color: var(--color-primary)
-
-                &.router-link-exact-active
-                    background: var(--color-background-soft)
-                    color: var(--color-primary)
+            justify-content: space-between
 </style>

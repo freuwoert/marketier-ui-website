@@ -229,6 +229,8 @@
             box-shadow: var(--shadow-elevation-low)
             position: relative
             z-index: 1
+            overflow-x: auto
+            overflow-y: hidden
 
             .spacer
                 flex: 1
@@ -308,4 +310,22 @@
 
                 button
                     flex: 1
+
+    @media screen and (max-width: 840px)
+        .configurator-wrapper
+            grid-template-columns: auto
+            grid-template-rows: 1fr 15rem auto
+            grid-template-areas: "header" "preview" "options"
+
+    @media screen and (max-width: 540px)
+        .configurator-wrapper
+            .options
+                .row
+                    flex-direction: column
+                    align-items: stretch
+
+                    .affix,
+                    .flex-1,
+                    .placeholder
+                        flex: none
 </style>
