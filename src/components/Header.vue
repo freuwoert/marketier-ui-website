@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header id="header">
         <div class="limiter">
             <RouterLink to="/" id="logo">
                 <img alt="Marketier UI logo" class="logo" src="@/assets/mui_icon.svg" />
@@ -25,7 +25,7 @@
         z-index: 100
         width: 100%
         height: 4rem
-        background-color: #ffffffdd
+        background-color: #ffffffee
         backdrop-filter: blur(10px)
         display: flex
         align-items: center

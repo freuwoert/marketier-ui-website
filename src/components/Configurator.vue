@@ -6,10 +6,10 @@
             <!-- <mui-button size="small" :variant="variantByActiveState('toggle')" @click="setType('toggle')" label="toggle"/> -->
             <!-- <mui-button size="small" :variant="variantByActiveState('loader')" @click="setType('loader')" label="loader"/> -->
             <div class="spacer"></div>
-            <!-- <mui-button size="small" variant="text" label="Generate code" icon-right="download"/> -->
+            <mui-button class="top-generate-code-button" size="small" variant="text" label="Generate code" icon-right="download" @click="generateCode()"/>
         </div>
 
-        <div class="preview">
+        <div class="preview" ref="preview" :class="{'fixed': previewFixed}">
             <mui-input
                 v-if="type === 'input'"
                 :type="inputType"
@@ -46,6 +46,12 @@
             <mui-loader
                 v-if="type === 'loader'"
                 />
+
+            <div class="info">
+                <span>Preview</span>
+                <!-- <div>|</div> -->
+                <!-- <a href="#">Docs</a> -->
+            </div>
         </div>
 
         <div class="options">
@@ -90,13 +96,13 @@
 
                 <small>
                     <b>This site uses Googles "Material Symbols Rounded" icon font.</b><br>
-                    You can use any icon font in your project as long as you set the<br>
+                    You can use any icon font in your project as long as you set the
                     <code>--mui-icon-font</code> css-variable to the desired font family.
                 </small>
 
                 <div class="row">
-                    <mui-input no-border label="Left Icon" v-model="iconLeft"/>
-                    <mui-input no-border label="Right Icon" v-model="iconRight"/>
+                    <mui-input class="flex-1" no-border label="Left Icon" v-model="iconLeft"/>
+                    <mui-input class="flex-1" no-border label="Right Icon" v-model="iconRight"/>
                 </div>
             </fieldset>
 
@@ -106,8 +112,8 @@
                 <mui-toggle class="checkbox" v-model="required" no-border append-label="Required" />
                 
                 <div class="row">
-                    <mui-input no-border type="number" label="Min" v-model="min"/>
-                    <mui-input no-border type="number" label="Max" v-model="max"/>
+                    <mui-input class="flex-1" no-border type="number" label="Min" v-model="min"/>
+                    <mui-input class="flex-1" no-border type="number" label="Max" v-model="max"/>
                 </div>
 
                 <mui-input no-border label="Pattern" v-model="pattern"/>
@@ -116,7 +122,7 @@
                 <mui-toggle class="checkbox" v-show="!!max__" v-model="hideMax" no-border append-label="Hide character counter" />
             </fieldset>
 
-            <fieldset v-show="displayPasswordSpecificOptions">
+            <fieldset v-if="displayPasswordSpecificOptions">
                 <legend>Password options</legend>
 
                 <mui-toggle class="checkbox" v-model="hideObfuscationToggle" no-border append-label="Hide obfuscation toggle" />
@@ -128,7 +134,7 @@
                 </mui-toggle>
             </fieldset>
 
-            <fieldset v-show="displayTextareaSpecificOptions">
+            <fieldset v-if="displayTextareaSpecificOptions">
                 <legend>Textarea options</legend>
 
                 <select class="dropdown" v-model="resize">
@@ -139,9 +145,9 @@
                 </select>
             </fieldset>
 
-            <!-- <div class="bottom-bar">
-                <mui-button label="Generate code" icon-right="download"/>
-            </div> -->
+            <div class="bottom-bar">
+                <mui-button label="Generate code" icon-right="download" @click="generateCode()"/>
+            </div>
         </div>
     </div>
 </template>
@@ -173,7 +179,19 @@
                 hideObfuscationToggle: false,
                 showPasswordScore: false,
                 hideMax: false,
+
+
+
+                previewFixed: false,
+                initialPreviewPosition: 0,
             }
+        },
+
+        mounted() {
+            this.initialPreviewPosition = this.$refs.preview.getBoundingClientRect().top + window.scrollY
+            window.addEventListener('resize', this.calculateScroll)
+            window.addEventListener('scroll', this.calculateScroll)
+            this.calculateScroll()
         },
 
         computed: {
@@ -196,6 +214,35 @@
             pattern__() {
                 return this.pattern ? this.pattern : null
             },
+
+
+
+            inputCode() {
+                let code = `<mui-input type="${this.inputType}"`
+
+                if (this.label) code += ` label="${this.label}"`
+                if (this.placeholder) code += ` placeholder="${this.placeholder}"`
+                if (this.iconLeft) code += ` icon-left="${this.iconLeft}"`
+                if (this.iconRight) code += ` icon-right="${this.iconRight}"`
+                if (this.prefix) code += ` prefix="${this.prefix}"`
+                if (this.suffix) code += ` suffix="${this.suffix}"`
+                if (this.noBorder) code += ` no-border`
+                if (this.disabled) code += ` disabled`
+                if (this.clearable) code += ` clearable`
+                if (this.required) code += ` required`
+                if (this.min__) code += ` :min="${this.min__}"`
+                if (this.max__) code += ` :max="${this.max__}"`
+                if (this.max__ && this.hideMax) code += ` hide-max`
+                if (this.pattern__) code += ` pattern="${this.pattern__}"`
+                if (this.inputType === 'textarea' && this.resize !== 'none') code += ` resize="${this.resize}"`
+                if (this.errorText) code += ` error-text="${this.errorText}"`
+                if (this.inputType === 'password' && this.hideObfuscationToggle) code += ` hide-obfuscation-toggle`
+                if (this.inputType === 'password' && this.showPasswordScore) code += ` show-password-score`
+                
+                code += `/>`
+
+                return code
+            },
         },
 
         methods: {
@@ -205,6 +252,21 @@
 
             setType(type) {
                 this.type = type
+            },
+
+            calculateScroll() {
+                this.previewFixed = this.initialPreviewPosition < (window.scrollY + (document?.getElementById('header')?.getBoundingClientRect()?.height || 0))
+            },
+
+            generateCode() {
+                let code = ''
+
+                switch (this.type)
+                {
+                    case 'input': code = this.inputCode; break;
+                }
+
+                console.log(code)
             },
         },
     }
@@ -235,17 +297,48 @@
             .spacer
                 flex: 1
 
+            .top-generate-code-button
+                white-space: nowrap
+
         .preview
             grid-area: preview
             display: flex
             align-items: center
             justify-content: center
             padding: 1rem
+            background: var(--color-background)
+            position: relative
+
+            .info
+                position: absolute
+                top: 1rem
+                left: 1rem
+                background: #000000aa
+                backdrop-filter: blur(10px)
+                color: #ffffffee
+                border-radius: 3rem
+                display: flex
+                align-items: center
+                padding: 0 1rem
+                gap: .5rem
+                height: 1.75rem
+                font-size: .8rem
+                user-select: none
+
+                > div
+                    opacity: .5
+
+                > a
+                    color: #1e90ff
+                    text-decoration: none
+
+                    &:hover
+                        color: #70a1ff
 
         .options
             grid-area: options
             background: var(--color-background-mute)
-            padding: 1rem 0
+            padding-top: 2rem
             display: flex
             flex-direction: column
             gap: 2rem
@@ -254,12 +347,12 @@
 
             fieldset
                 border: none
-                box-shadow: var(--shadow-elevation-low)
                 padding: 1rem
                 padding-bottom: 2rem
                 gap: 1rem
                 display: flex
                 flex-direction: column
+                box-shadow: var(--shadow-elevation-low)
 
                 legend
                     padding-inline: 0rem
@@ -271,7 +364,8 @@
 
             code
                 border-radius: .25rem
-                padding: .25rem
+                padding: 0 .25rem
+                display: inline-block
                 background: var(--color-background-soft)
 
             .row
@@ -305,20 +399,67 @@
 
             .bottom-bar
                 display: flex
-                padding: 0 1rem
-                margin-top: -1rem
+                padding: 1rem
+                margin-top: -2rem
 
                 button
                     flex: 1
 
     @media screen and (max-width: 840px)
         .configurator-wrapper
+            border-radius: 0
+            box-shadow: none
             grid-template-columns: auto
-            grid-template-rows: 1fr 15rem auto
-            grid-template-areas: "header" "preview" "options"
+            grid-template-rows: 10rem auto auto
+            grid-template-areas: "preview" "header" "options"
+
+            .preview
+                width: 100%
+                height: 10rem
+                border-top: 2px solid var(--color-border)
+                border-bottom: 2px solid var(--color-border)
+                background-color: #ffffffee
+                backdrop-filter: blur(10px)
+                padding-top: 3.25rem
+
+                &.fixed
+                    position: fixed
+                    z-index: 10
+                    top: 4rem
+                    left: 0
+                
+            .header
+                background: var(--color-background-mute)
+                box-shadow: none
+                border-bottom: 2px solid var(--color-border)
+
+            .options
+                fieldset
+                    &:last-of-type
+                        box-shadow: none
+
+                .bottom-bar
+                    border-top: 2px solid var(--color-border)
+                    border-bottom: 2px solid var(--color-border)
 
     @media screen and (max-width: 540px)
         .configurator-wrapper
+            .preview
+                padding-top: 3rem
+
+                .info
+                    top: 0
+                    left: 0
+                    width: 100%
+                    border-radius: 0
+                    height: 2rem
+                    color: var(--color-text)
+                    background: var(--color-background-mute)
+                    border-bottom: 2px solid var(--color-border)
+
+            .header
+                padding-block: 2rem
+
             .options
                 .row
                     flex-direction: column

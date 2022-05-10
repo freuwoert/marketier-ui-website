@@ -26,7 +26,8 @@ export default {
         return {
             menu: [
                 {name: 'Home', link: '/'},
-                {name: 'About', link: '/about'},
+                // {name: 'Docs', link: '/docs'},
+                // {name: 'Getting Started', link: '/getting-started'},
                 {name: 'Configurator', link: '/configurator'},
             ],
 

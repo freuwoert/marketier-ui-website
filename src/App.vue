@@ -16,6 +16,12 @@
     body
         padding-top: 4rem
 
+    main
+        padding-block: 8rem
+        gap: 12rem
+        display: flex
+        flex-direction: column
+
     #hero
         background: var(--color-primary)
 
@@ -38,10 +44,12 @@
                 text-align: center
 
     #content
-        padding-block: 8rem
-
-        .limiter p
-            max-width: 50rem
+        .limiter
+            h2
+                margin-bottom: 2rem
+            p
+                max-width: 50rem
+                margin: 0 auto
 
     @media screen and (max-width: 768px)
         #hero

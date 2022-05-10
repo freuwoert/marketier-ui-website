@@ -1,10 +1,11 @@
 <template>
+    <section id="hero">
+        <div class="limiter">
+            <h1>MUI Configurator</h1>
+        </div>
+    </section>
+
     <main>
-        <section id="hero">
-            <div class="limiter">
-                <h1>MUI Configurator</h1>
-            </div>
-        </section>
         <section id="configurator">
             <div class="limiter">
                 <Configurator />
@@ -19,7 +20,15 @@
 
 <style lang="sass" scoped>
     #configurator
-        padding-block: 8rem
         --primary: var(--color-primary)
         --mui-icon-font: var(--font-icons)
+
+    @media screen and (max-width: 840px)
+        main
+            padding-block: 0
+            gap: 0
+
+        #configurator
+            .limiter
+                padding: 0
 </style>
