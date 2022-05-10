@@ -427,6 +427,8 @@
                     z-index: 10
                     top: 4rem
                     left: 0
+                    border-bottom-color: transparent
+                    box-shadow: var(--shadow-elevation-medium)
                 
             .header
                 background: var(--color-background-mute)
@@ -445,17 +447,11 @@
     @media screen and (max-width: 540px)
         .configurator-wrapper
             .preview
-                padding-top: 3rem
+                padding: 1rem
+                height: 8rem
 
                 .info
-                    top: 0
-                    left: 0
-                    width: 100%
-                    border-radius: 0
-                    height: 2rem
-                    color: var(--color-text)
-                    background: var(--color-background-mute)
-                    border-bottom: 2px solid var(--color-border)
+                    display: none
 
             .header
                 padding-block: 2rem
