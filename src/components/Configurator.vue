@@ -1,12 +1,95 @@
 <template>
     <div class="configurator-wrapper">
-        <div class="header">
-            <mui-button size="small" :variant="variantByActiveState('input')"  @click="setType('input')"  label="input"/>
-            <!-- <mui-button size="small" :variant="variantByActiveState('button')" @click="setType('button')" label="button"/> -->
-            <!-- <mui-button size="small" :variant="variantByActiveState('toggle')" @click="setType('toggle')" label="toggle"/> -->
-            <!-- <mui-button size="small" :variant="variantByActiveState('loader')" @click="setType('loader')" label="loader"/> -->
-            <div class="spacer"></div>
-            <mui-button class="top-generate-code-button" size="small" variant="text" label="Generate code" icon-right="download" @click="generateCode()"/>
+        <div class="options">
+            <fieldset>
+                <legend>General settings</legend>
+
+                <select class="dropdown" v-model="inputType">
+                    <option value="text">text</option>
+                    <option value="password">password</option>
+                    <option value="email">email</option>
+                    <option value="number">number</option>
+                    <option value="tel">tel</option>
+                    <option value="url">url</option>
+                    <option value="search">search</option>
+                    <option value="textarea">textarea</option>
+                </select>
+
+
+                <div class="row">
+                    <mui-toggle class="checkbox flex-1" v-model="disabled" no-border label="Disabled" />
+                    <mui-toggle class="checkbox flex-1" v-model="clearable" no-border label="Clearable" />
+                    <mui-toggle class="checkbox flex-1" v-model="noBorder" no-border label="Hide border" />
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Labels & text</legend>
+
+                <mui-input no-border label="Label" v-model="label"/>
+
+                <div class="row">
+                    <mui-input no-border label="Prefix" v-model="prefix" class="affix"/>
+                    <mui-input no-border label="Placeholder" v-model="placeholder" class="placeholder"/>
+                    <mui-input no-border label="Suffix" v-model="suffix" class="affix"/>
+                </div>
+
+                <mui-input no-border label="Helper text" v-model="helper"/>
+            </fieldset>
+
+            <fieldset>
+                <legend>Icons</legend>
+
+                <small>
+                    <b>This site uses Googles "Material Symbols Rounded" icon font.</b><br>
+                    You can use any icon font in your project as long as you set the
+                    <code>--mui-icon-font</code> css-variable to the desired font family.
+                </small>
+
+                <div class="row">
+                    <mui-input class="flex-1" no-border label="Left Icon" v-model="iconLeft"/>
+                    <mui-input class="flex-1" no-border label="Right Icon" v-model="iconRight"/>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Validation</legend>
+
+                <mui-toggle class="checkbox" v-model="required" no-border label="Required" />
+                
+                <div class="row">
+                    <mui-input class="flex-1" no-border type="number" label="Min" v-model="min"/>
+                    <mui-input class="flex-1" no-border type="number" label="Max" v-model="max"/>
+                </div>
+
+                <mui-input no-border label="Pattern" v-model="pattern"/>
+                <mui-input no-border label="Error Text" v-model="errorText"/>
+
+                <mui-toggle class="checkbox" v-show="!!max__" v-model="hideMax" no-border append-label="Hide character counter" />
+            </fieldset>
+
+            <fieldset v-if="displayPasswordSpecificOptions">
+                <legend>Password options</legend>
+
+                <mui-toggle class="checkbox" v-model="hideObfuscationToggle" no-border label="Hide obfuscation toggle" />
+                <mui-toggle class="checkbox" v-model="showPasswordScore" no-border>
+                    <template v-slot:label>
+                        <b>Show password score</b><br>
+                        Requires dropbox/zxcvbn
+                    </template>
+                </mui-toggle>
+            </fieldset>
+
+            <fieldset v-if="displayTextareaSpecificOptions">
+                <legend>Textarea options</legend>
+
+                <select class="dropdown" v-model="resize">
+                    <option value="none">none</option>
+                    <option value="vertical">vertical</option>
+                    <option value="horizontal">horizontal</option>
+                    <option value="both">both</option>
+                </select>
+            </fieldset>
         </div>
 
         <div class="preview" ref="preview" :class="{'fixed': previewFixed}">
@@ -49,105 +132,13 @@
 
             <div class="info">
                 <span>Preview</span>
-                <!-- <div>|</div> -->
-                <!-- <a href="#">Docs</a> -->
+                <div>|</div>
+                <a href="#">Docs</a>
             </div>
         </div>
 
-        <div class="options">
-            <fieldset>
-                <legend>General settings</legend>
-
-                <select class="dropdown" v-model="inputType">
-                    <option value="text">text</option>
-                    <option value="password">password</option>
-                    <option value="email">email</option>
-                    <option value="number">number</option>
-                    <option value="tel">tel</option>
-                    <option value="url">url</option>
-                    <option value="search">search</option>
-                    <option value="textarea">textarea</option>
-                </select>
-
-
-                <div class="row">
-                    <mui-toggle class="checkbox flex-1" v-model="disabled" no-border append-label="Disabled" />
-                    <mui-toggle class="checkbox flex-1" v-model="clearable" no-border append-label="Clearable" />
-                    <mui-toggle class="checkbox flex-1" v-model="noBorder" no-border append-label="Hide border" />
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Labels & text</legend>
-
-                <mui-input no-border label="Label" v-model="label"/>
-
-                <div class="row">
-                    <mui-input no-border label="Prefix" v-model="prefix" class="affix"/>
-                    <mui-input no-border label="Placeholder" v-model="placeholder" class="placeholder"/>
-                    <mui-input no-border label="Suffix" v-model="suffix" class="affix"/>
-                </div>
-
-                <mui-input no-border label="Helper text" v-model="helper"/>
-            </fieldset>
-
-            <fieldset>
-                <legend>Icons</legend>
-
-                <small>
-                    <b>This site uses Googles "Material Symbols Rounded" icon font.</b><br>
-                    You can use any icon font in your project as long as you set the
-                    <code>--mui-icon-font</code> css-variable to the desired font family.
-                </small>
-
-                <div class="row">
-                    <mui-input class="flex-1" no-border label="Left Icon" v-model="iconLeft"/>
-                    <mui-input class="flex-1" no-border label="Right Icon" v-model="iconRight"/>
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Validation</legend>
-
-                <mui-toggle class="checkbox" v-model="required" no-border append-label="Required" />
-                
-                <div class="row">
-                    <mui-input class="flex-1" no-border type="number" label="Min" v-model="min"/>
-                    <mui-input class="flex-1" no-border type="number" label="Max" v-model="max"/>
-                </div>
-
-                <mui-input no-border label="Pattern" v-model="pattern"/>
-                <mui-input no-border label="Error Text" v-model="errorText"/>
-
-                <mui-toggle class="checkbox" v-show="!!max__" v-model="hideMax" no-border append-label="Hide character counter" />
-            </fieldset>
-
-            <fieldset v-if="displayPasswordSpecificOptions">
-                <legend>Password options</legend>
-
-                <mui-toggle class="checkbox" v-model="hideObfuscationToggle" no-border append-label="Hide obfuscation toggle" />
-                <mui-toggle class="checkbox" v-model="showPasswordScore" no-border>
-                    <template v-slot:appendLabel>
-                        <b>Show password score</b><br>
-                        Requires dropbox/zxcvbn
-                    </template>
-                </mui-toggle>
-            </fieldset>
-
-            <fieldset v-if="displayTextareaSpecificOptions">
-                <legend>Textarea options</legend>
-
-                <select class="dropdown" v-model="resize">
-                    <option value="none">none</option>
-                    <option value="vertical">vertical</option>
-                    <option value="horizontal">horizontal</option>
-                    <option value="both">both</option>
-                </select>
-            </fieldset>
-
-            <div class="bottom-bar">
-                <mui-button label="Generate code" icon-right="download" @click="generateCode()"/>
-            </div>
+        <div class="output">
+            {{generatedCode}}
         </div>
     </div>
 </template>
@@ -239,7 +230,20 @@
                 if (this.inputType === 'password' && this.hideObfuscationToggle) code += ` hide-obfuscation-toggle`
                 if (this.inputType === 'password' && this.showPasswordScore) code += ` show-password-score`
                 
-                code += `/>`
+                code += ` />`
+
+                return code
+            },
+
+
+
+            generatedCode() {
+                let code = ''
+
+                switch (this.type)
+                {
+                    case 'input': code = this.inputCode; break;
+                }
 
                 return code
             },
@@ -257,48 +261,16 @@
             calculateScroll() {
                 this.previewFixed = this.initialPreviewPosition < (window.scrollY + (document?.getElementById('header')?.getBoundingClientRect()?.height || 0))
             },
-
-            generateCode() {
-                let code = ''
-
-                switch (this.type)
-                {
-                    case 'input': code = this.inputCode; break;
-                }
-
-                console.log(code)
-            },
         },
     }
 </script>
+
 <style lang="sass" scoped>
     .configurator-wrapper
-        background: var(--color-background)
-        border-radius: .5rem
-        box-shadow: var(--shadow-elevation-medium)
-        overflow: hidden
-        display: grid
-        grid-template-columns: auto 32rem
-        grid-template-rows: 1fr 34rem
-        grid-template-areas: "header header" "preview options"
-
-        .header
-            grid-area: header
-            display: flex
-            align-items: center
-            gap: 1rem
-            padding: 1rem
-            box-shadow: var(--shadow-elevation-low)
-            position: relative
-            z-index: 1
-            overflow-x: auto
-            overflow-y: hidden
-
-            .spacer
-                flex: 1
-
-            .top-generate-code-button
-                white-space: nowrap
+        display: flex
+        flex-direction: column
+        gap: 1rem
+        --mui-background: var(--color-background-mute)
 
         .preview
             grid-area: preview
@@ -306,6 +278,9 @@
             align-items: center
             justify-content: center
             padding: 1rem
+            padding-top: 3.75rem
+            border-radius: 8px
+            border: 1px solid var(--color-background-soft)
             background: var(--color-background)
             position: relative
 
@@ -337,25 +312,29 @@
 
         .options
             grid-area: options
-            background: var(--color-background-mute)
             padding-top: 2rem
             display: flex
             flex-direction: column
-            gap: 2rem
+            gap: 1rem
             overflow: auto
-            --mui-background: #00000010
 
             fieldset
                 border: none
-                padding: 1rem
-                padding-bottom: 2rem
                 gap: 1rem
+                padding: 0
                 display: flex
                 flex-direction: column
+                border-radius: 8px
+                border: 1px solid var(--color-background-soft)
                 box-shadow: var(--shadow-elevation-low)
 
                 legend
-                    padding-inline: 0rem
+                    display: flex
+                    width: 100%
+                    line-height: 1.5
+                    padding: 1rem
+                    margin-bottom: 1rem
+                    background: var(--color-background-mute)
                     color: var(--color-primary)
                     font-weight: 600
                     font-size: .8rem
@@ -366,7 +345,7 @@
                 border-radius: .25rem
                 padding: 0 .25rem
                 display: inline-block
-                background: var(--color-background-soft)
+                background: var(--color-background-mute)
 
             .row
                 display: flex
@@ -394,7 +373,7 @@
                 justify-content: flex-start
                 height: 3rem
                 padding-left: 1rem
-                background: #00000010
+                background: var(--color-background-mute)
                 --mui-background: var(--color-background-mute)
 
             .bottom-bar
@@ -404,6 +383,13 @@
 
                 button
                     flex: 1
+
+        .output
+            background: #282c34
+            color: #abb2bf
+            border-radius: 8px
+            padding: 1rem
+            font-family: monospace
 
     @media screen and (max-width: 840px)
         .configurator-wrapper
